@@ -28,6 +28,19 @@ public class OtpVerification {
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
 
+    /**
+     * Discriminates OTP purpose: "login", "register", "forgot-password", "magic-link"
+     */
+    @Column(name = "type", length = 20)
+    private String type;
+
+    /**
+     * JSON blob used to carry pending registration data (name, password, role)
+     * until email is verified via /api/auth/register/complete.
+     */
+    @Column(name = "pending_data", columnDefinition = "TEXT")
+    private String pendingData;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
